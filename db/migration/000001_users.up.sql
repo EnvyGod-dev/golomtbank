@@ -1,0 +1,15 @@
+--TABLE User
+BEGIN;
+
+CREATE TABLE "User" (
+    "Username" VARCHAR NOT NULL,
+    "HashedPassword" VARCHAR NOT NULL,
+    "FirstName" VARCHAR NOT NULL,
+    "LastName" VARCHAR NOT NULL,
+    "Email" VARCHAR UNIQUE NOT NULL,
+    "PasswordChangedAt" TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01 00:00:00Z',
+    "CreatedAt" TIMESTAMPTZ NOT NULL DEFAULT (NOW()),
+    CONSTRAINT "Username_Pk" PRIMARY KEY ("Username")
+) TABLESPACE pg_default;
+
+COMMIT;
