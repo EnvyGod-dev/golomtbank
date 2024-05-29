@@ -6,7 +6,6 @@ import (
 	"strconv"
 )
 
-// GenerateAccountNumber generates a random bank account number based on the bank name and returns it as int64.
 func GenerateAccountNumber(bankName string) int64 {
 	var prefix string
 	switch bankName {
@@ -22,20 +21,17 @@ func GenerateAccountNumber(bankName string) int64 {
 		prefix = getRandomPrefix([]string{"70"})
 	case "Богд Банк":
 		prefix = getRandomPrefix([]string{"60"})
-
 	default:
 		return 0
 	}
 
 	suffix := generateRandomDigits(8)
-
 	accountNumberStr := prefix + suffix
 
 	accountNumber, err := strconv.ParseInt(accountNumberStr, 10, 64)
 	if err != nil {
 		return 0
 	}
-
 	return accountNumber
 }
 
