@@ -20,6 +20,7 @@ type Account struct {
 type Entry struct {
 	Id            int64     `json:"Id"`
 	FromAccountId int64     `json:"FromAccountId"`
+	ToAccountId   int64     `json:"ToAccountId"`
 	BankName      string    `json:"BankName"`
 	Amount        int64     `json:"Amount"`
 	CreatedAt     time.Time `json:"CreatedAt"`

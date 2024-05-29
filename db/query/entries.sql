@@ -3,12 +3,14 @@ INSERT INTO
     "entries" (
         "FromAccountId",
         "BankName",
+        "ToAccountId",
         "Amount"
     )
 VALUES
     (
         sqlc.arg('FromAccountId'),
         sqlc.arg('BankName'),
+        sqlc.arg('ToAccountId'),
         sqlc.arg('Amount')
     ) RETURNING *;
 

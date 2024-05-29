@@ -8,7 +8,7 @@ CREATE TABLE "transfer" (
     "ToAccountId" BIGINT NOT NULL,
     "Amount" BIGINT NOT NULL,
     "CreatedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    CONSTRAINT "transfers_PK_Id" PRIMARY KEY ("Id"),
+    CONSTRAINT "Transfers_Pk_Id" PRIMARY KEY ("Id"),
     CONSTRAINT "Transfers_From_Account_Id" FOREIGN KEY ("FromAccountId") REFERENCES "accounts" ("Id"),
     CONSTRAINT "Transfers_To_Account_Id" FOREIGN KEY ("ToAccountId") REFERENCES "accounts" ("Id"),
     CONSTRAINT "BankName_Check" CHECK (

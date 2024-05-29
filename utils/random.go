@@ -9,7 +9,7 @@ import (
 func GenerateAccountNumber(bankName string) int64 {
 	var prefix string
 	switch bankName {
-	case "Голомт банк":
+	case "Голомт Банк":
 		prefix = getRandomPrefix([]string{"12", "11"})
 	case "Хаан банк":
 		prefix = getRandomPrefix([]string{"50", "51", "52"})

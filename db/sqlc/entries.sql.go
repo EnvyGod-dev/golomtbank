@@ -14,28 +14,37 @@ INSERT INTO
     "entries" (
         "FromAccountId",
         "BankName",
+        "ToAccountId",
         "Amount"
     )
 VALUES
     (
         $1,
         $2,
-        $3
-    ) RETURNING "Id", "FromAccountId", "BankName", "Amount", "CreatedAt"
+        $3,
+        $4
+    ) RETURNING "Id", "FromAccountId", "ToAccountId", "BankName", "Amount", "CreatedAt"
 `
 
 type CreateEntriesParams struct {
 	FromAccountId int64  `json:"FromAccountId"`
 	BankName      string `json:"BankName"`
+	ToAccountId   int64  `json:"ToAccountId"`
 	Amount        int64  `json:"Amount"`
 }
 
 func (q *Queries) CreateEntries(ctx context.Context, arg CreateEntriesParams) (Entry, error) {
-	row := q.db.QueryRowContext(ctx, createEntries, arg.FromAccountId, arg.BankName, arg.Amount)
+	row := q.db.QueryRowContext(ctx, createEntries,
+		arg.FromAccountId,
+		arg.BankName,
+		arg.ToAccountId,
+		arg.Amount,
+	)
 	var i Entry
 	err := row.Scan(
 		&i.Id,
 		&i.FromAccountId,
+		&i.ToAccountId,
 		&i.BankName,
 		&i.Amount,
 		&i.CreatedAt,
@@ -45,7 +54,7 @@ func (q *Queries) CreateEntries(ctx context.Context, arg CreateEntriesParams) (E
 
 const getEntry = `-- name: GetEntry :one
 SELECT
-    "Id", "FromAccountId", "BankName", "Amount", "CreatedAt"
+    "Id", "FromAccountId", "ToAccountId", "BankName", "Amount", "CreatedAt"
 FROM
     "entries"
 WHERE
@@ -60,6 +69,7 @@ func (q *Queries) GetEntry(ctx context.Context, id int64) (Entry, error) {
 	err := row.Scan(
 		&i.Id,
 		&i.FromAccountId,
+		&i.ToAccountId,
 		&i.BankName,
 		&i.Amount,
 		&i.CreatedAt,
@@ -69,7 +79,7 @@ func (q *Queries) GetEntry(ctx context.Context, id int64) (Entry, error) {
 
 const listEntries = `-- name: ListEntries :many
 SELECT
-    "Id", "FromAccountId", "BankName", "Amount", "CreatedAt"
+    "Id", "FromAccountId", "ToAccountId", "BankName", "Amount", "CreatedAt"
 FROM
     "entries"
 ORDER BY
@@ -90,6 +100,7 @@ func (q *Queries) ListEntries(ctx context.Context, id int64) ([]Entry, error) {
 		if err := rows.Scan(
 			&i.Id,
 			&i.FromAccountId,
+			&i.ToAccountId,
 			&i.BankName,
 			&i.Amount,
 			&i.CreatedAt,
