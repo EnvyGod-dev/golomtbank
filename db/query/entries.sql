@@ -1,34 +1,33 @@
 -- name: CreateEntries :one
-
-INSERT INTO "entries" 
-    (
+INSERT INTO
+    "entries" (
         "FromAccountId",
+        "BankName",
         "Amount"
     )
 VALUES
     (
         sqlc.arg('FromAccountId'),
+        sqlc.arg('BankName'),
         sqlc.arg('Amount')
     ) RETURNING *;
 
-
 -- name: GetEntry :one
-
-SELECT 
+SELECT
     *
-FROM 
+FROM
     "entries"
-WHERE 
+WHERE
     "Id" = sqlc.arg('Id')
-LIMIT 1;
+LIMIT
+    1;
 
 -- name: ListEntries :many
-
-SELECT 
+SELECT
     *
-FROM 
+FROM
     "entries"
 ORDER BY
     "Id" = sqlc.arg('Id') DESC
-LIMIT 1
-OFFSET 2;
+LIMIT
+    1 OFFSET 2;

@@ -43,9 +43,10 @@ func (store *SQLStore) execTx(ctx context.Context, fn func(*Queries) error) erro
 }
 
 type TransferTxParams struct {
-	FromAccountId int64 `json:"from_account_id"`
-	ToAccountId   int64 `json:"to_account_id"`
-	Amount        int64 `json:"amount"`
+	FromAccountId int64  `json:"from_account_id"`
+	ToAccountId   int64  `json:"to_account_id"`
+	BankName      string `json:"bank_name"`
+	Amount        int64  `json:"amount"`
 }
 
 type TransferTxResult struct {
@@ -62,9 +63,11 @@ func (store *SQLStore) TransferTx(ctx context.Context, arg TransferTxParams) (Tr
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
 
+		/* trunk-ignore(golangci-lint/gosimple) */
 		result.Transfer, err = q.CreateTransfers(ctx, CreateTransfersParams{
 			FromAccountId: arg.FromAccountId,
 			ToAccountId:   arg.ToAccountId,
+			BankName:      arg.BankName,
 			Amount:        arg.Amount,
 		})
 		if err != nil {

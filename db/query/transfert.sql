@@ -1,35 +1,35 @@
 -- name: CreateTransfers :one
-
-INSERT INTO  "transfer"
-    (
+INSERT INTO
+    "transfer" (
         "FromAccountId",
         "ToAccountId",
+        "BankName",
         "Amount"
     )
-VALUES 
+VALUES
     (
         sqlc.arg('FromAccountId'),
         sqlc.arg('ToAccountId'),
+        sqlc.arg('BankName'),
         sqlc.arg('Amount')
     ) RETURNING *;
 
 -- name: GetTransfers :one
-
-SELECT 
+SELECT
     *
-FROM 
+FROM
     "transfer"
 WHERE
     "Id" = sqlc.arg('Id')
-LIMIT 1;
+LIMIT
+    1;
 
 -- name: ListTransfers :many
-
 SELECT
     *
 FROM
     "transfer"
 ORDER BY
     "Id" = sqlc.arg('Id') DESC
-LIMIT 1
-OFFSET 2;
+LIMIT
+    1 OFFSET 2;

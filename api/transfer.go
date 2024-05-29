@@ -14,6 +14,7 @@ import (
 type transferRequest struct {
 	FromAccountId int64  `json:"from_account_id" binding:"required,min=1"`
 	ToAccountId   int64  `json:"to_account_id" binding:"required,min=1"`
+	BankName      string `json:"BankName" binding:"required"`
 	Amount        int64  `json:"amount" binding:"required,gt=0"`
 	Currency      string `json:"currency" binding:"required"`
 }
@@ -40,10 +41,27 @@ func (server *Server) createTransfer(ctx *gin.Context) {
 	if !valid {
 		return
 	}
+
+	var fee int64
+	if req.BankName == "Голомт Банк" {
+		fee = 0
+	} else {
+		fee = 200
+	}
+
+	adjustedAmount := req.Amount + fee
+
+	if adjustedAmount < 0 {
+		err := errors.New("Үлдэгдэл хүрэлцэхгүй байна")
+		ctx.JSON(http.StatusBadRequest, errResponse(err))
+		return
+	}
+
 	arg := db.TransferTxParams{
 		FromAccountId: req.FromAccountId,
 		ToAccountId:   req.ToAccountId,
-		Amount:        req.Amount,
+		BankName:      req.BankName,
+		Amount:        adjustedAmount,
 	}
 
 	result, err := server.store.TransferTx(ctx, arg)
