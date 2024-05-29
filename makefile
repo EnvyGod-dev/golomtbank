@@ -10,14 +10,13 @@ migratedb:
 downdb:
 	migrate -path db/migration -database "postgresql://root:root@localhost:5432/golomt?sslmode=disable" -verbose down
 
-server:
-	go run main.go
-
 test:
 		go test -v -cover ./test
 
 run:
 	go run main.go
+
 mock:
 	mockgen -destination db/mock/store.go simplebank/db/sqlc Store	
-.PHONY: test mock
+
+.PHONY: test mock run sqlc downdb server migratedb
