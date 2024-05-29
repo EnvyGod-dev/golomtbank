@@ -2,7 +2,7 @@
 BEGIN;
 
 CREATE TABLE "accounts" (
-    "Id" BIGSERIAL NOT NULL,
+    "Id" BIGINT NOT NULL,
     "Balance" BIGINT NOT NULL,
     "Owner" VARCHAR(100) DEFAULT('') NOT NULL,
     "BankName" VARCHAR(100) NOT NULL,

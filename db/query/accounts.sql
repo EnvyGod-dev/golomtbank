@@ -1,6 +1,7 @@
 -- name: CreateAccounts :one
 INSERT INTO
     "accounts" (
+        "Id",
         "Balance",
         "Owner",
         "BankName",
@@ -8,6 +9,7 @@ INSERT INTO
     )
 VALUES
     (
+        sqlc.arg('Id'),
         sqlc.arg('Balance'),
         sqlc.arg('Owner'),
         sqlc.arg('BankName'),

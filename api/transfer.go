@@ -14,7 +14,7 @@ import (
 type transferRequest struct {
 	FromAccountId int64  `json:"from_account_id" binding:"required,min=1"`
 	ToAccountId   int64  `json:"to_account_id" binding:"required,min=1"`
-	BankName      string `json:"BankName" binding:"required"`
+	BankName      string `json:"Bank_name" binding:"required"`
 	Amount        int64  `json:"amount" binding:"required,gt=0"`
 	Currency      string `json:"currency" binding:"required"`
 }
@@ -89,6 +89,5 @@ func (server *Server) validAccount(ctx *gin.Context, accountId int64, currency s
 		ctx.JSON(http.StatusBadRequest, errResponse(err))
 		return account, false
 	}
-
 	return account, true
 }

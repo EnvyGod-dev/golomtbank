@@ -40,6 +40,7 @@ func (q *Queries) AddAccountBalance(ctx context.Context, arg AddAccountBalancePa
 const createAccounts = `-- name: CreateAccounts :one
 INSERT INTO
     "accounts" (
+        "Id",
         "Balance",
         "Owner",
         "BankName",
@@ -50,11 +51,13 @@ VALUES
         $1,
         $2,
         $3,
-        $4
+        $4,
+        $5
     ) RETURNING "Id", "Balance", "Owner", "BankName", "Currency", "CreatedAt"
 `
 
 type CreateAccountsParams struct {
+	Id       int64  `json:"Id"`
 	Balance  int64  `json:"Balance"`
 	Owner    string `json:"Owner"`
 	BankName string `json:"BankName"`
@@ -63,6 +66,7 @@ type CreateAccountsParams struct {
 
 func (q *Queries) CreateAccounts(ctx context.Context, arg CreateAccountsParams) (Account, error) {
 	row := q.db.QueryRowContext(ctx, createAccounts,
+		arg.Id,
 		arg.Balance,
 		arg.Owner,
 		arg.BankName,

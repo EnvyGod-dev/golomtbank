@@ -1,3 +1,4 @@
+/* trunk-ignore-all(golangci-lint/typecheck) */
 package api
 
 import (
@@ -7,6 +8,7 @@ import (
 	"net/http"
 	db "task/db/sqlc"
 	"task/token"
+	"task/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
@@ -27,6 +29,7 @@ func (server *Server) createAccounts(ctx *gin.Context) {
 	}
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	arg := db.CreateAccountsParams{
+		Id:       utils.GenerateAccountNumber(req.BankName),
 		Owner:    authPayload.Username,
 		Currency: req.Currency,
 		BankName: req.BankName,

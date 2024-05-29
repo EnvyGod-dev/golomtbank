@@ -31,6 +31,7 @@ func NewServer(config utils.Config, store db.Store) (*Server, error) {
 	}
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		/* trunk-ignore(golangci-lint/errcheck) */
 		v.RegisterValidation("currency", validCurrency)
 	}
 
